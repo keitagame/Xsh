@@ -60,27 +60,22 @@ void print_banner(void) {
 
     printf(YELLOW BOLD);
     printf("  ┌─────────────────────────────────────────────────┐\n");
-    printf("  │   eXtremely Humorous Shell  v%-10s          │\n", XSH_VERSION);
-    printf("  │   \"bash? zsh? Pfft. We have MEMES here.\"       │\n");
+    printf("  │   keita's SHINYA TENTION Shell  v%-10s     │\n", XSH_VERSION);
+    printf("  │   \"bash? zsh? Pfft. We have MEMES here.\"        │\n");
     printf("  └─────────────────────────────────────────────────┘\n");
     printf(RESET);
 
     printf(MAGENTA);
     printf("\n");
-    printf("       (\\(\\     <( こんにちは、シェルへようこそ！ )\n");
-    printf("       ( -.-)  /\n");
-    printf("       o_(\")(\")  ← このうさぎがあなたのコマンドを実行します\n");
+    printf("＼(^o^)／ < Xshへようこそ！ \n");
     printf("\n");
     printf(RESET);
 
     /* Random startup messages */
     const char *msgs[] = {
-        "  " GREEN "✓" RESET " カーネルに賄賂を渡しました\n",
-        "  " GREEN "✓" RESET " シェルスクリプトの呪いを解除しました\n",
-        "  " GREEN "✓" RESET " バグをフィーチャーに改名しました\n",
-        "  " GREEN "✓" RESET " コーヒーをRAMに注入しました\n",
-        "  " GREEN "✓" RESET " Windowsとの戦争に勝利しました\n",
-        "  " GREEN "✓" RESET " sudo rm -rf /* の実行を阻止しました (今回は)\n",
+        "  " GREEN "✓" RESET " やあ、今日はどんなクソコードを組むのかね\n",
+        "  " GREEN "✓" RESET " IT用語しりとりでもやろうじゃないか\n",
+        "  " GREEN "✓" RESET " みんなもFRANKになろう\n",
     };
     srand((unsigned)time(NULL));
     int n = sizeof(msgs) / sizeof(msgs[0]);
@@ -100,16 +95,16 @@ static int cmd_count = 0;
 
 const char *get_mood_emoji(void) {
     const char *moods[] = {
-        "(っ◕‿◕)っ",
-        "(ﾉ◕ヮ◕)ﾉ*:･ﾟ✧",
-        "ヽ(•‿•)ノ",
+        "(=^･ω･^=)っ",
+        "(=｀ω´=) ﾑ!",
+        "d(=^･ω･^=)b",
         "( ͡° ͜ʖ ͡°)",
         "(╯°□°）╯",
         "(ง'̀-'́)ง",
         "¯\\_(ツ)_/¯",
         "(>_<)",
         "(^_^;)",
-        "٩(◕‿◕｡)۶",
+        "ฅ(=✧ω✧=)ฅﾆｬﾆｬｰﾝ✧",
     };
     return moods[cmd_count % (sizeof(moods) / sizeof(moods[0]))];
 }
@@ -141,13 +136,13 @@ void print_prompt(void) {
     printf(BOLD "%s" RESET, get_mood_emoji());
     printf(BOLD " %s%s@%s" RESET, col, username, hostname);
     printf(WHITE " [" RESET);
-    printf(YELLOW "%s" RESET, display_cwd);
+    printf(WHITE "%s" RESET, display_cwd);
     printf(WHITE "]" RESET);
 
     if (getuid() == 0) {
-        printf(RED BOLD "\n神 # " RESET);
+        printf(RED BOLD "神 # " RESET);
     } else {
-        printf(GREEN BOLD "\n➜ " RESET);
+        printf(GREEN BOLD "> " RESET);
     }
     fflush(stdout);
 }
@@ -298,7 +293,7 @@ int builtin_xmotd(void) {
         "デバッグは探偵仕事。あなたが探偵で、あなたが犯人。",
     };
     srand((unsigned)time(NULL));
-    printf(CYAN BOLD "\n  📣 今日のメッセージ:\n" RESET);
+    printf(CYAN BOLD "\n  今日のメッセージ:\n" RESET);
     printf(YELLOW "  \"%s\"\n\n" RESET, msgs[rand() % 8]);
     return 0;
 }
