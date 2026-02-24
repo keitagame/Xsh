@@ -142,8 +142,8 @@ void print_banner(void) {
     printf(FGRGB(80,200,255) "◈  " RESET);
     printf(FGRGB(180,180,180) "Tab to complete  " RESET);
     printf(FGRGB(80,200,255) "◈  " RESET);
-    printf(FGRGB(180,180,180) "↑/↓ for history" RESET);
-    printf(FGRGB(0,220,255) "  ║\n" RESET);
+    //printf(FGRGB(180,180,180) "↑/↓ for history" RESET);
+    printf(FGRGB(0,220,255) "          ║\n" RESET);
 
     printf(FGRGB(0,220,255) "  ║" RESET);
     printf(FGRGB(80,200,255) "  ◈  " RESET);
@@ -155,7 +155,7 @@ void print_banner(void) {
     printf(FGRGB(0,255,180) BOLD "%04d-%02d-%02d %02d:%02d:%02d" RESET,
            t->tm_year + 1900, t->tm_mon + 1, t->tm_mday,
            t->tm_hour, t->tm_min, t->tm_sec);
-    printf(FGRGB(0,220,255) "                         ║\n" RESET);
+    printf(FGRGB(0,220,255) "                     ║\n" RESET);
 
     printf(FGRGB(0,220,255) "  ╚══════════════════════════════════════════════════════════════╝\n" RESET);
     printf("\n");
