@@ -1,12 +1,25 @@
 /*
  * XSH - The Xtreme Shell
- * A beautiful, feature-rich Linux shell with ASCII art and stunning visuals
- * 
+ * A beautiful, feature-rich Unix shell with ASCII art and stunning visuals
+ *
  * Author: XSH Project
  * License: MIT
+ *
+ * Portability: Linux, macOS, FreeBSD, OpenBSD, NetBSD, and other POSIX systems.
+ * Build (static, Linux):  gcc -static -O2 -o xsh xsh.c
+ * Build (dynamic, any):   cc -O2 -o xsh xsh.c
  */
 
-#define _GNU_SOURCE
+/* ---- Portability feature-test macros (must come before any #include) ---- */
+#if defined(__linux__)
+#  define _GNU_SOURCE          /* enables strdup, setenv, unsetenv on older glibc */
+#elif defined(__APPLE__) || defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__NetBSD__)
+#  define _BSD_SOURCE
+#  define _DEFAULT_SOURCE
+#else
+#  define _POSIX_C_SOURCE 200809L
+#endif
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -25,7 +38,16 @@
 #include <glob.h>
 #include <limits.h>
 #include <ctype.h>
-#include <termios.h>
+
+/* environ is in unistd.h on most systems, but declare it explicitly for safety */
+#ifndef _GNU_SOURCE
+extern char **environ;
+#endif
+
+/* GLOB_TILDE is not in POSIX; guard against systems that lack it */
+#ifndef GLOB_TILDE
+#  define GLOB_TILDE 0
+#endif
 
 /* ===== ANSI Color Codes ===== */
 #define RESET       "\033[0m"
@@ -112,7 +134,7 @@ void print_banner(void) {
     printf(FGRGB(0,220,255) "║\n" RESET);
 
     printf(FGRGB(0,220,255) "  ║" RESET);
-    printf(FGRGB(0,220,140) BOLD "    ╚███╔╝ ███████╗███████║    The Xtreme Shell               " RESET);
+    printf(FGRGB(0,220,140) BOLD "    ╚███╔╝ ███████╗███████║    The Xtreme Unix Shell          " RESET);
     printf(FGRGB(0,220,255) "║\n" RESET);
 
     printf(FGRGB(0,220,255) "  ║" RESET);
@@ -235,6 +257,7 @@ char *build_prompt(void) {
      * ╰─▶ 
      */
      const char *status_bg;
+     (void)status_bg; /* reserved for future use */
 
 if (last_exit_code == 0) {
     status_bg = "\033[48;2;0;200;150m";   // success (green)
@@ -588,7 +611,6 @@ int builtin_echo(char **args, int argc) {
 int builtin_export(char **args, int argc) {
     if (argc < 2) {
         /* Print all env variables */
-        extern char **environ;
         for (int i = 0; environ[i]; i++) {
             printf(FGRGB(0,200,255) "export " RESET "%s\n", environ[i]);
         }
@@ -1739,8 +1761,11 @@ int main(int argc, char *argv[]) {
     signal(SIGTTOU, SIG_IGN);
     signal(SIGTTIN, SIG_IGN);
 
-    /* Set XSH as shell env */
-    setenv("SHELL", "/usr/local/bin/xsh", 0);
+    /* Set XSH as shell env — use argv[0] if available, otherwise a generic path */
+    {
+        const char *shell_path = (argc > 0 && argv[0][0] == '/') ? argv[0] : "xsh";
+        setenv("SHELL", shell_path, 0);
+    }
     setenv("XSH_VERSION", XSH_VERSION, 1);
 
     /* Initialize readline */
@@ -1787,11 +1812,23 @@ int main(int argc, char *argv[]) {
         load_history_file();
         load_rc();
 
-        /* Default aliases */
-        alias_set("ls", "ls --color=auto");
-        alias_set("ll", "ls -la --color=auto");
-        alias_set("la", "ls -A --color=auto");
+        /* Default aliases — use platform-appropriate color flags */
+#if defined(__linux__)
+        alias_set("ls",   "ls --color=auto");
+        alias_set("ll",   "ls -la --color=auto");
+        alias_set("la",   "ls -A --color=auto");
         alias_set("grep", "grep --color=auto");
+#elif defined(__APPLE__) || defined(__FreeBSD__) || defined(__OpenBSD__) || defined(__NetBSD__)
+        alias_set("ls",   "ls -G");
+        alias_set("ll",   "ls -laG");
+        alias_set("la",   "ls -AG");
+        alias_set("grep", "grep --color=auto");
+#else
+        alias_set("ls",   "ls");
+        alias_set("ll",   "ls -la");
+        alias_set("la",   "ls -A");
+        alias_set("grep", "grep");
+#endif
         alias_set("..", "cd ..");
         alias_set("...", "cd ../..");
         alias_set("~", "cd ~");
