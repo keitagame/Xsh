@@ -1,0 +1,90 @@
+# ~/.xshrc - XSH configuration file
+# This file is sourced on every interactive XSH session
+
+# ──────────────────────────────────────
+# Environment Variables
+# ──────────────────────────────────────
+export EDITOR=nano
+export VISUAL=nano
+export LANG=en_US.UTF-8
+export LC_ALL=en_US.UTF-8
+export PAGER=less
+export LESS='-R --quit-if-one-screen'
+
+# Add local bin to PATH
+export PATH="$HOME/.local/bin:$HOME/bin:$PATH"
+
+# ──────────────────────────────────────
+# Aliases — General
+# ──────────────────────────────────────
+alias ls='ls --color=auto'
+alias ll='ls -alFh --color=auto'
+alias la='ls -A --color=auto'
+alias l='ls -CF --color=auto'
+alias lt='ls -lt --color=auto'
+
+alias ..='cd ..'
+alias ...='cd ../..'
+alias ....='cd ../../..'
+
+alias grep='grep --color=auto'
+alias egrep='egrep --color=auto'
+alias fgrep='fgrep --color=auto'
+
+alias cp='cp -iv'
+alias mv='mv -iv'
+alias rm='rm -Iv'
+alias mkdir='mkdir -pv'
+
+alias df='df -h'
+alias du='du -h'
+alias free='free -h'
+
+# ──────────────────────────────────────
+# Aliases — Safety
+# ──────────────────────────────────────
+alias chown='chown --preserve-root'
+alias chmod='chmod --preserve-root'
+alias chgrp='chgrp --preserve-root'
+
+# ──────────────────────────────────────
+# Aliases — Quick Edit
+# ──────────────────────────────────────
+alias xshrc='$EDITOR ~/.xshrc'
+alias reload='source ~/.xshrc'
+
+# ──────────────────────────────────────
+# Aliases — Network
+# ──────────────────────────────────────
+alias ping='ping -c 5'
+alias ports='ss -tulanp'
+alias myip='curl -s https://ipinfo.io/ip'
+
+# ──────────────────────────────────────
+# Aliases — Git
+# ──────────────────────────────────────
+alias gs='git status'
+alias ga='git add'
+alias gc='git commit'
+alias gp='git push'
+alias gl='git log --oneline --graph --decorate'
+alias gd='git diff'
+alias gb='git branch'
+alias gco='git checkout'
+
+# ──────────────────────────────────────
+# Aliases — System Info
+# ──────────────────────────────────────
+alias top='htop 2>/dev/null || top'
+alias psa='ps aux'
+alias psg='ps aux | grep'
+alias path='echo $PATH | tr ":" "\n"'
+alias now='date "+%Y-%m-%d %H:%M:%S"'
+
+# ──────────────────────────────────────
+# Aliases — Quick Navigation
+# ──────────────────────────────────────
+alias home='cd ~'
+alias desk='cd ~/Desktop 2>/dev/null || echo "No Desktop dir"'
+alias docs='cd ~/Documents 2>/dev/null || echo "No Documents dir"'
+alias dl='cd ~/Downloads 2>/dev/null || echo "No Downloads dir"'
