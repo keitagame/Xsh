@@ -234,29 +234,41 @@ char *build_prompt(void) {
      * ╭─[ user@host ]─[ ~/path ]─[ git_branch ]─[ exit_code ]
      * ╰─▶ 
      */
-    snprintf(prompt, sizeof(prompt),
-        "\001\033[38;2;0;150;255m\002╭─\001\033[0m\002"
-        "[\001\033[38;2;100;220;255m\002\001\033[1m\002%s\001\033[0m\002"
-        "\001\033[38;2;0;150;255m\002@\001\033[0m\002"
-        "\001\033[38;2;100;255;200m\002%s\001\033[0m\002]"
-        "\001\033[38;2;0;150;255m\002─\001\033[0m\002"
-        "[\001\033[38;2;180;180;255m\002%s\001\033[0m\002]"
-        "%s"
-        " \001%s\002%s\001\033[0m\002"
-        "\n"
-        "\001\033[38;2;0;150;255m\002╰─\001\033[0m\002"
-        "\001%s\002%s \001\033[0m\002",
-        user_info ? user_info->pw_name : "user",
-        hostname,
-        short_cwd,
-        git_seg,
-        status_color, status_char,
-        prompt_end_color, is_root
-    );
+     const char *status_bg;
 
-    return prompt;
+if (last_exit_code == 0) {
+    status_bg = "\033[48;2;0;200;150m";   // success (green)
+} else {
+    status_bg = "\033[48;2;255;80;80m";   // error (red)
 }
+snprintf(prompt, sizeof(prompt),
 
+    /* user@host */
+    "\001\033[38;2;120;200;255m\002%s@%s\001\033[0m\002 "
+
+    /* path */
+    "\001\033[38;2;180;180;255m\002%s\001\033[0m\002 "
+
+    /* git */
+    "%s"
+
+    /* exit status */
+    "\001%s\002%s\001\033[0m\002 "
+
+    /* prompt symbol */
+    "\001%s\002%s\001\033[0m\002 ",
+
+    user_info ? user_info->pw_name : "user",
+    hostname,
+    short_cwd,
+    git_seg,
+    status_color,
+    status_char,
+    prompt_end_color,
+    is_root
+);
+return prompt;
+}
 /* ===== Signal Handlers ===== */
 void sigint_handler(int sig) {
     (void)sig;
