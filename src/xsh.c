@@ -124,7 +124,7 @@ void print_banner(void) {
     printf(FGRGB(0,220,255) "║\n" RESET);
 
     printf(FGRGB(0,220,255) "  ║" RESET);
-    printf(FGRGB(0,160,80) BOLD "    ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝                                  " RESET);
+    printf(FGRGB(0,160,80) BOLD "   ╚═╝  ╚═╝╚══════╝╚═╝  ╚═╝                                   " RESET);
     printf(FGRGB(0,220,255) "║\n" RESET);
 
     printf(FGRGB(0,220,255) "  ║" RESET);
