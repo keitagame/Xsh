@@ -3,7 +3,7 @@
  * A beautiful, feature-rich Unix shell with ASCII art and stunning visuals
  *
  * Author: XSH Project
- * License: MIT
+ * 
  *
  * Portability: Linux, macOS, FreeBSD, OpenBSD, NetBSD, and other POSIX systems.
  * Build (static, Linux):  gcc -static -O2 -o xsh xsh.c
